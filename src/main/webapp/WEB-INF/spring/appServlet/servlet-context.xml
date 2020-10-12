@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans
+	xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+	<annotation-driven/>
+	
+	<!-- 파일 업로드 설정 -->
+	<!-- <beans:bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		업로드 사이지 설정  5242880
+		<beans:property name="maxUploadSize" value="-1"></beans:property>
+	</beans:bean> -->
+	<resources mapping="/resources/**" location="/resources/" />
+	<resources mapping="/admin/**" location="/resources/" />
+	
+	<!-- 파일 다운로드 설정 -->
+	<beans:bean id="filedownloadView" class="com.jhta.allchwi.view.DownloadView" />
+	
+	<!-- 뷰이름과 동일한 뷰로 응답하는 뷰리절버 등록 -->
+	<beans:bean
+	 class="org.springframework.web.servlet.view.BeanNameViewResolver">
+		<beans:property name="order" value="1"/>
+	</beans:bean>
+	
+	
+	<!--///////////////////// tile 관련 설정 //////////////////// -->
+	<!-- 설정파일 읽어오는 설정. -->
+	<beans:bean
+		class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+		<beans:property name="definitions">
+			<beans:value>/WEB-INF/tiles.xml</beans:value>
+		</beans:property>
+	</beans:bean>
+
+	<!-- 뷰이름으로 뷰페이지로 이동하는 뷰리절버 -->
+	<beans:bean
+		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+		<beans:property name="viewNames" value=".*" />
+		<beans:property name="viewClass"  
+			value="org.springframework.web.servlet.view.tiles3.TilesView" />
+	</beans:bean>
+	<!-- ////////////////////////////////////////////////////// -->
+
+	<beans:bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+
+	<context:component-scan
+		base-package="com.jhta.allchwi.controller" />
+
+</beans:beans>

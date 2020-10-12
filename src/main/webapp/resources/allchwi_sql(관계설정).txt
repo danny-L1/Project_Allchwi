@@ -1,0 +1,745 @@
+
+
+-- member_login Table Create SQL
+CREATE TABLE allchwi.member_login
+(
+    `ml_num`      INT(11)        NOT NULL    AUTO_INCREMENT COMMENT '로그인번호', 
+    `id`          VARCHAR(50)    NOT NULL    COMMENT '아이디 ', 
+    `pwd`         VARCHAR(45)    NULL        DEFAULT NULL COMMENT '비밀번호', 
+    `tutor_auth`  INT(11)        NULL        DEFAULT NULL COMMENT '튜터여부 ', 
+    `login_auth`  INT(11)        NULL        DEFAULT NULL COMMENT '탈퇴여부 ', 
+    `ml_regdate`  TIMESTAMP      NULL        DEFAULT NULL COMMENT '등록일', 
+    `email_auth`  CHAR(2)        NULL        DEFAULT NULL COMMENT '이메일 인증 ', 
+    `kakaoUser`   INT(11)        NULL        DEFAULT 0 COMMENT '카카오 회원 1 일반 회원 0', 
+    PRIMARY KEY (ml_num)
+);
+
+
+-- member_login Table Create SQL
+CREATE TABLE allchwi.big_category
+(
+    `bcategory_num`   INT(11)        NOT NULL    AUTO_INCREMENT, 
+    `bcategory_name`  VARCHAR(45)    NOT NULL, 
+    PRIMARY KEY (bcategory_num)
+);
+
+
+-- member_login Table Create SQL
+CREATE TABLE allchwi.big_location
+(
+    `bloc_num`   INT(11)         NOT NULL    AUTO_INCREMENT, 
+    `bloc_name`  VARCHAR(150)    NULL        DEFAULT NULL, 
+    PRIMARY KEY (bloc_num)
+);
+
+
+-- member_login Table Create SQL
+CREATE TABLE allchwi.profile_img
+(
+    `pro_num`       INT(11)         NOT NULL    AUTO_INCREMENT, 
+    `pro_img`       LONGBLOB        NULL        DEFAULT NULL, 
+    `pro_filename`  VARCHAR(100)    NULL        DEFAULT NULL, 
+    `pro_regdate`   TIMESTAMP       NULL        DEFAULT NULL, 
+    PRIMARY KEY (pro_num)
+);
+
+
+-- member_login Table Create SQL
+CREATE TABLE allchwi.small_category
+(
+    `scategory_num`   INT(11)        NOT NULL    AUTO_INCREMENT, 
+    `bcategory_num`   INT(11)        NOT NULL, 
+    `scategory_name`  VARCHAR(45)    NOT NULL, 
+    PRIMARY KEY (scategory_num, bcategory_num)
+);
+
+CREATE INDEX fk_small_category_big_category_idx ON allchwi.small_category
+(
+    bcategory_num
+);
+
+ALTER TABLE allchwi.small_category
+    ADD CONSTRAINT fk_small_category_big_category FOREIGN KEY (bcategory_num)
+        REFERENCES allchwi.big_category (bcategory_num) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+-- member_login Table Create SQL
+CREATE TABLE allchwi.small_location
+(
+    `sloc_num`   INT(11)        NOT NULL    AUTO_INCREMENT, 
+    `bloc_num`   INT(11)        NOT NULL, 
+    `sloc_name`  VARCHAR(50)    NULL        DEFAULT NULL, 
+    PRIMARY KEY (sloc_num, bloc_num)
+);
+
+CREATE INDEX fk_small_location_big_location_idx ON allchwi.small_location
+(
+    bloc_num
+);
+
+ALTER TABLE allchwi.small_location
+    ADD CONSTRAINT fk_small_location_big_location FOREIGN KEY (bloc_num)
+        REFERENCES allchwi.big_location (bloc_num) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+-- member_login Table Create SQL
+CREATE TABLE allchwi.class_info
+(
+    `class_num`       INT(11)         NOT NULL    AUTO_INCREMENT, 
+    `ml_num`          INT(11)         NOT NULL, 
+    `scategory_num`   INT(11)         NOT NULL, 
+    `sloc_num`        INT(11)         NOT NULL, 
+    `pro_num`         INT(11)         NOT NULL, 
+    `tutor_nickname`  VARCHAR(45)     NULL, 
+    `tutor_phone`     VARCHAR(50)     NULL, 
+    `class_address`   VARCHAR(100)    NULL, 
+    `class_form`      INT(11)         NULL, 
+    `class_max`       INT(11)         NULL, 
+    `class_min`       INT(11)         NULL, 
+    `class_title`     VARCHAR(200)    NULL, 
+    `class_price`     INT(11)         NULL, 
+    `class_hour`      INT(11)         NOT NULL, 
+    `class_count`     TEXT            NULL, 
+    `tutor_about`     TEXT            NULL, 
+    `class_about`     TEXT            NULL, 
+    `class_target`    TEXT            NULL, 
+    `class_regdate`   TIMESTAMP       NULL, 
+    `class_auth`      INT(11)         NULL, 
+    `class_status`    INT(11)         NULL, 
+    PRIMARY KEY (class_num, ml_num, scategory_num, sloc_num)
+);
+
+CREATE INDEX fk_class_info_member_login_idx ON allchwi.class_info
+(
+    ml_num
+);
+
+CREATE INDEX fk_class_info_profile_img_idx ON allchwi.class_info
+(
+    pro_num
+);
+
+CREATE INDEX fk_class_info_small_category_idx ON allchwi.class_info
+(
+    scategory_num
+);
+
+CREATE INDEX fk_class_info_small_location_idx ON allchwi.class_info
+(
+    sloc_num
+);
+
+ALTER TABLE allchwi.class_info
+    ADD CONSTRAINT fk_class_info_member_login FOREIGN KEY (ml_num)
+        REFERENCES allchwi.member_login (ml_num) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE allchwi.class_info
+    ADD CONSTRAINT fk_class_info_small_category FOREIGN KEY (scategory_num)
+        REFERENCES allchwi.small_category (scategory_num) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE allchwi.class_info
+    ADD CONSTRAINT fk_class_info_small_location FOREIGN KEY (sloc_num)
+        REFERENCES allchwi.small_location (sloc_num) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE allchwi.class_info
+    ADD CONSTRAINT fk_class_info_profile_img FOREIGN KEY (pro_num)
+        REFERENCES allchwi.profile_img (pro_num) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+-- member_login Table Create SQL
+CREATE TABLE allchwi.community
+(
+    `commu_num`      INT(11)         NOT NULL    AUTO_INCREMENT, 
+    `class_num`      INT(11)         NOT NULL, 
+    `commu_title`    VARCHAR(300)    NOT NULL, 
+    `commu_regdate`  TIMESTAMP       NULL        DEFAULT NULL, 
+    PRIMARY KEY (commu_num, class_num)
+);
+
+CREATE INDEX fk_community_class_info1_idx ON allchwi.community
+(
+    class_num
+);
+
+ALTER TABLE allchwi.community
+    ADD CONSTRAINT fk_community_class_info FOREIGN KEY (class_num)
+        REFERENCES allchwi.class_info (class_num) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+-- member_login Table Create SQL
+CREATE TABLE allchwi.class_date
+(
+    `date_num`         INT(11)        NOT NULL    AUTO_INCREMENT, 
+    `class_num`        INT(11)        NOT NULL, 
+    `class_date`       TIMESTAMP      NULL        DEFAULT NULL, 
+    `class_startTime`  VARCHAR(50)    NULL        DEFAULT NULL, 
+    `class_endTime`    VARCHAR(50)    NULL        DEFAULT NULL, 
+    `class_comment`    TEXT           NULL        DEFAULT NULL, 
+    `class_msg`        TEXT           NULL        DEFAULT NULL, 
+    `class_month`      INT(11)        NULL        DEFAULT NULL, 
+    `time_ref`         INT(11)        NULL        DEFAULT NULL, 
+    `time_cnt`         INT(11)        NULL        DEFAULT NULL, 
+    `date_regdate`     TIMESTAMP      NULL        DEFAULT NULL, 
+    PRIMARY KEY (date_num, class_num)
+);
+
+CREATE INDEX fk_class_date_class_info_idx ON allchwi.class_date
+(
+    class_num
+);
+
+ALTER TABLE allchwi.class_date
+    ADD CONSTRAINT fk_class_date_class_info FOREIGN KEY (class_num)
+        REFERENCES allchwi.class_info (class_num) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+-- member_login Table Create SQL
+CREATE TABLE allchwi.class_apply
+(
+    `apply_num`      INT(11)         NOT NULL    AUTO_INCREMENT, 
+    `date_num`       INT(11)         NOT NULL, 
+    `ml_num`         INT(11)         NOT NULL, 
+    `stu_lev`        VARCHAR(45)     NOT NULL, 
+    `stu_msg`        VARCHAR(100)    NOT NULL, 
+    `stu_phone`      VARCHAR(45)     NOT NULL, 
+    `apply_auth`     CHAR(1)         NOT NULL, 
+    `apply_regdate`  TIMESTAMP       NOT NULL    DEFAULT CURRENT_TIMESTAMP(), 
+    PRIMARY KEY (apply_num, date_num, ml_num)
+);
+
+CREATE INDEX fk_class_apply_class_date_idx ON allchwi.class_apply
+(
+    date_num
+);
+
+CREATE INDEX fk_class_apply_member_login_idx ON allchwi.class_apply
+(
+    ml_num
+);
+
+ALTER TABLE allchwi.class_apply
+    ADD CONSTRAINT fk_class_apply_class_date FOREIGN KEY (date_num)
+        REFERENCES allchwi.class_date (date_num) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE allchwi.class_apply
+    ADD CONSTRAINT fk_class_apply_member_login FOREIGN KEY (ml_num)
+        REFERENCES allchwi.member_login (ml_num) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+-- member_login Table Create SQL
+CREATE TABLE allchwi.payment
+(
+    `pay_num`       INT(11)        NOT NULL    AUTO_INCREMENT, 
+    `class_num`     INT(11)        NOT NULL, 
+    `ml_num`        INT(11)        NOT NULL, 
+    `apply_num`     INT(11)        NOT NULL, 
+    `pay_way`       VARCHAR(45)    NOT NULL, 
+    `final_price`   INT(8)         NOT NULL, 
+    `pay_point`     INT(8)         NOT NULL, 
+    `class_fee`     INT(8)         NOT NULL, 
+    `class_finish`  INT(4)         NOT NULL, 
+    `pay_regdate`   TIMESTAMP      NOT NULL    DEFAULT CURRENT_TIMESTAMP(), 
+    PRIMARY KEY (pay_num, class_num, ml_num, apply_num)
+);
+
+CREATE INDEX fk_payment_class_apply_idx ON allchwi.payment
+(
+    apply_num
+);
+
+CREATE INDEX fk_payment_class_info_idx ON allchwi.payment
+(
+    class_num
+);
+
+CREATE INDEX fk_payment_member_login_idx ON allchwi.payment
+(
+    ml_num
+);
+
+ALTER TABLE allchwi.payment
+    ADD CONSTRAINT fk_payment_class_apply FOREIGN KEY (apply_num)
+        REFERENCES allchwi.class_apply (apply_num) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE allchwi.payment
+    ADD CONSTRAINT fk_payment_class_info FOREIGN KEY (class_num)
+        REFERENCES allchwi.class_info (class_num) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE allchwi.payment
+    ADD CONSTRAINT fk_payment_member_login FOREIGN KEY (ml_num)
+        REFERENCES allchwi.member_login (ml_num) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+-- member_login Table Create SQL
+CREATE TABLE allchwi.assignment
+(
+    `assign_num`      INT(11)         NOT NULL    AUTO_INCREMENT, 
+    `commu_num`       INT(11)         NOT NULL, 
+    `assign_title`    VARCHAR(50)     NOT NULL, 
+    `assign_content`  VARCHAR(100)    NOT NULL, 
+    `assign_regdate`  TIMESTAMP       NOT NULL    DEFAULT CURRENT_TIMESTAMP(), 
+    PRIMARY KEY (assign_num, commu_num)
+);
+
+CREATE INDEX fk_assignment_community1_idx ON allchwi.assignment
+(
+    commu_num
+);
+
+ALTER TABLE allchwi.assignment
+    ADD CONSTRAINT fk_assignment_community FOREIGN KEY (commu_num)
+        REFERENCES allchwi.community (commu_num) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+-- member_login Table Create SQL
+CREATE TABLE allchwi.assign_submit
+(
+    `sub_num`      INT(11)         NOT NULL    AUTO_INCREMENT, 
+    `assign_num`   INT(11)         NOT NULL, 
+    `ml_num`       INT(11)         NOT NULL, 
+    `sub_content`  VARCHAR(200)    NOT NULL, 
+    `sub_regdate`  TIMESTAMP       NOT NULL    DEFAULT CURRENT_TIMESTAMP(), 
+    PRIMARY KEY (sub_num, assign_num, ml_num)
+);
+
+CREATE INDEX fk_assign_submit_assignment_idx ON allchwi.assign_submit
+(
+    assign_num
+);
+
+CREATE INDEX fk_assign_submit_member_login_idx ON allchwi.assign_submit
+(
+    ml_num
+);
+
+ALTER TABLE allchwi.assign_submit
+    ADD CONSTRAINT fk_assign_submit_assignment FOREIGN KEY (assign_num)
+        REFERENCES allchwi.assignment (assign_num) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE allchwi.assign_submit
+    ADD CONSTRAINT fk_assign_submit_member_login FOREIGN KEY (ml_num)
+        REFERENCES allchwi.member_login (ml_num) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+-- member_login Table Create SQL
+CREATE TABLE allchwi.online_class
+(
+    `online_num`        INT(11)         NOT NULL    AUTO_INCREMENT, 
+    `commu_num`         INT(11)         NOT NULL, 
+    `online_title`      VARCHAR(200)    NULL        DEFAULT NULL, 
+    `online_content`    TEXT            NULL        DEFAULT NULL, 
+    `online_time`       INT(11)         NULL        DEFAULT NULL, 
+    `online_file`       VARCHAR(400)    NULL        DEFAULT NULL, 
+    `online_thumbnail`  LONGBLOB        NULL        DEFAULT NULL, 
+    `online_regdate`    TIMESTAMP       NULL        DEFAULT NULL, 
+    PRIMARY KEY (online_num, commu_num)
+);
+
+CREATE INDEX fk_online_class_community_idx ON allchwi.online_class
+(
+    commu_num
+);
+
+ALTER TABLE allchwi.online_class
+    ADD CONSTRAINT fk_online_class_community FOREIGN KEY (commu_num)
+        REFERENCES allchwi.community (commu_num) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+-- member_login Table Create SQL
+CREATE TABLE allchwi.assign_data
+(
+    `assigndata_num`       INT(11)         NOT NULL    AUTO_INCREMENT, 
+    `sub_num`              INT(11)         NOT NULL, 
+    `assign_orgFilename`   VARCHAR(100)    NOT NULL, 
+    `assign_saveFilename`  VARCHAR(100)    NOT NULL, 
+    `assigndata_regdate`   TIMESTAMP       NOT NULL    DEFAULT CURRENT_TIMESTAMP(), 
+    `assigndata_size`      BIGINT(20)      NOT NULL, 
+    PRIMARY KEY (assigndata_num, sub_num)
+);
+
+CREATE INDEX fk_assign_data_assign_submit1_idx ON allchwi.assign_data
+(
+    sub_num
+);
+
+ALTER TABLE allchwi.assign_data
+    ADD CONSTRAINT fk_assign_data_assign_submit FOREIGN KEY (sub_num)
+        REFERENCES allchwi.assign_submit (sub_num) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+-- member_login Table Create SQL
+CREATE TABLE allchwi.certificate
+(
+    `certif_num`            INT(11)         NOT NULL    AUTO_INCREMENT, 
+    `class_num`  			INT(11)         NOT NULL, 
+    `certif_filename`       VARCHAR(200)    NOT NULL, 
+    `certif_file`           LONGBLOB        NOT NULL, 
+    `certif_name`           VARCHAR(100)    NOT NULL, 
+    `certif_regdate`        TIMESTAMP       NULL, 
+    PRIMARY KEY (certif_num)
+);
+
+CREATE INDEX fk_certificate_class_info_idx ON allchwi.certificate
+(
+    class_num
+);
+
+ALTER TABLE allchwi.certificate
+    ADD CONSTRAINT fk_certificate_class_info FOREIGN KEY (class_num)
+        REFERENCES allchwi.class_info (class_num) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+-- member_login Table Create SQL
+CREATE TABLE allchwi.class_img
+(
+    `cover_num`      INT(11)         NOT NULL    AUTO_INCREMENT, 
+    `class_num`      INT(11)         NOT NULL, 
+    `cover_name`     VARCHAR(100)    NULL        DEFAULT NULL, 
+    `cover_file`     LONGBLOB        NULL        DEFAULT NULL, 
+    `cover_regdate`  TIMESTAMP       NULL        DEFAULT NULL, 
+    PRIMARY KEY (cover_num)
+);
+
+CREATE INDEX fk_class_img_class_info_idx ON allchwi.class_img
+(
+    class_num
+);
+
+ALTER TABLE allchwi.class_img
+    ADD CONSTRAINT fk_class_img_class_info FOREIGN KEY (class_num)
+        REFERENCES allchwi.class_info (class_num) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+-- member_login Table Create SQL
+CREATE TABLE allchwi.class_qna
+(
+    `qna_num`      INT(11)         NOT NULL    AUTO_INCREMENT, 
+    `ml_num`       INT(11)         NOT NULL, 
+    `class_num`    INT(11)         NOT NULL, 
+    `qna_content`  VARCHAR(200)    NOT NULL, 
+    `qna_ref`      INT(11)         NOT NULL, 
+    `qna_lev`      INT(11)         NOT NULL, 
+    `qna_regdate`  TIMESTAMP       NOT NULL    DEFAULT CURRENT_TIMESTAMP(), 
+    `qna_status`   INT(11)         NOT NULL    DEFAULT 0, 
+    PRIMARY KEY (qna_num, ml_num, class_num)
+);
+
+CREATE INDEX fk_class_qna_class_info_idx ON allchwi.class_qna
+(
+    class_num
+);
+
+CREATE INDEX fk_class_qna_member_login_idx ON allchwi.class_qna
+(
+    ml_num
+);
+
+ALTER TABLE allchwi.class_qna
+    ADD CONSTRAINT fk_class_qna_class_info1 FOREIGN KEY (class_num)
+        REFERENCES allchwi.class_info (class_num) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE allchwi.class_qna
+    ADD CONSTRAINT fk_class_qna_member_login FOREIGN KEY (ml_num)
+        REFERENCES allchwi.member_login (ml_num) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+-- member_login Table Create SQL
+CREATE TABLE allchwi.class_review
+(
+    `review_num`      INT(11)         NOT NULL    AUTO_INCREMENT, 
+    `class_num`       INT(11)         NOT NULL, 
+    `ml_num`          INT(11)         NOT NULL, 
+    `curr_rating`     INT(11)         NOT NULL, 
+    `ready_rating`    INT(11)         NOT NULL, 
+    `kind_rating`     INT(11)         NOT NULL, 
+    `time_rating`     INT(11)         NOT NULL, 
+    `review_content`  VARCHAR(200)    NOT NULL, 
+    `review_status`   INT(11)         NOT NULL, 
+    `review_regdate`  TIMESTAMP       NOT NULL    DEFAULT CURRENT_TIMESTAMP(), 
+    PRIMARY KEY (review_num, class_num, ml_num)
+);
+
+CREATE INDEX fk_class_review_class_info_idx ON allchwi.class_review
+(
+    class_num
+);
+
+CREATE INDEX fk_class_review_member_login_idx ON allchwi.class_review
+(
+    ml_num
+);
+
+ALTER TABLE allchwi.class_review
+    ADD CONSTRAINT fk_class_review_class_info FOREIGN KEY (class_num)
+        REFERENCES allchwi.class_info (class_num) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE allchwi.class_review
+    ADD CONSTRAINT fk_class_review_member_login FOREIGN KEY (ml_num)
+        REFERENCES allchwi.member_login (ml_num) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+-- member_login Table Create SQL
+CREATE TABLE allchwi.commu_qna
+(
+    `qna_num`      INT(11)         NOT NULL    AUTO_INCREMENT, 
+    `commu_num`    INT(11)         NOT NULL, 
+    `ml_num`       INT(11)         NOT NULL, 
+    `qna_content`  VARCHAR(300)    NOT NULL, 
+    `qna_ref`      INT(11)         NOT NULL, 
+    `qna_lev`      INT(11)         NOT NULL, 
+    `qna_regdate`  TIMESTAMP       NOT NULL    DEFAULT CURRENT_TIMESTAMP(), 
+    PRIMARY KEY (qna_num, commu_num, ml_num)
+);
+
+CREATE INDEX fk_commu_qna_community_idx ON allchwi.commu_qna
+(
+    commu_num
+);
+
+CREATE INDEX fk_commu_qna_member_login_idx ON allchwi.commu_qna
+(
+    ml_num
+);
+
+ALTER TABLE allchwi.commu_qna
+    ADD CONSTRAINT fk_commu_qna_community FOREIGN KEY (commu_num)
+        REFERENCES allchwi.community (commu_num) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE allchwi.commu_qna
+    ADD CONSTRAINT fk_commu_qna_member_login FOREIGN KEY (ml_num)
+        REFERENCES allchwi.member_login (ml_num) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+-- member_login Table Create SQL
+CREATE TABLE allchwi.curriculum
+(
+    `curri_num`      INT(11)      NOT NULL    AUTO_INCREMENT, 
+    `class_num`      INT(11)      NOT NULL, 
+    `curri_count`    INT(11)      NULL        DEFAULT NULL, 
+    `curri_content`  TEXT         NULL        DEFAULT NULL, 
+    `curri_regdate`  TIMESTAMP    NULL        DEFAULT NULL, 
+    PRIMARY KEY (curri_num, class_num)
+);
+
+CREATE INDEX fk_curriculum_class_info1_idx ON allchwi.curriculum
+(
+    class_num
+);
+
+ALTER TABLE allchwi.curriculum
+    ADD CONSTRAINT fk_curriculum_class_info FOREIGN KEY (class_num)
+        REFERENCES allchwi.class_info (class_num) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+-- member_login Table Create SQL
+CREATE TABLE allchwi.member_info
+(
+    `mb_num`       INT(11)         NOT NULL    AUTO_INCREMENT, 
+    `ml_num`       INT(11)         NOT NULL, 
+    `pro_num`      INT(11)         NOT NULL, 
+    `mb_name`      VARCHAR(20)     NULL        DEFAULT NULL, 
+    `mb_phone`     VARCHAR(20)     NULL        DEFAULT NULL, 
+    `mb_nickname`  VARCHAR(50)     NULL        DEFAULT NULL, 
+    `mb_about`     VARCHAR(600)    NULL        DEFAULT NULL, 
+    `mb_auth`      INT(11)         NULL        DEFAULT NULL, 
+    `mb_reason`    VARCHAR(100)    NULL        DEFAULT NULL, 
+    `mb_regdate`   TIMESTAMP       NULL        DEFAULT NULL, 
+    PRIMARY KEY (mb_num, ml_num, pro_num)
+);
+
+CREATE INDEX fk_member_info_member_login_idx ON allchwi.member_info
+(
+    ml_num
+);
+
+CREATE INDEX fk_member_info_profile_img_idx ON allchwi.member_info
+(
+    pro_num
+);
+
+ALTER TABLE allchwi.member_info
+    ADD CONSTRAINT fk_member_info_member_login FOREIGN KEY (ml_num)
+        REFERENCES allchwi.member_login (ml_num) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE allchwi.member_info
+    ADD CONSTRAINT fk_member_info_profile_img FOREIGN KEY (pro_num)
+        REFERENCES allchwi.profile_img (pro_num) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+-- member_login Table Create SQL
+CREATE TABLE allchwi.notice
+(
+    `notice_num`      INT(11)         NOT NULL    AUTO_INCREMENT, 
+    `commu_num`       INT(11)         NOT NULL, 
+    `class_num`       INT(11)         NULL        DEFAULT NULL, 
+    `notice_title`    VARCHAR(45)     NULL        DEFAULT NULL, 
+    `notice_content`  VARCHAR(300)    NULL        DEFAULT NULL, 
+    `notice_view`     INT(11)         NULL        DEFAULT NULL, 
+    `notice_regdate`  TIMESTAMP       NULL        DEFAULT NULL, 
+    PRIMARY KEY (notice_num, commu_num)
+);
+
+CREATE INDEX fk_notice_community1_idx ON allchwi.notice
+(
+    commu_num
+);
+
+ALTER TABLE allchwi.notice
+    ADD CONSTRAINT fk_notice_community FOREIGN KEY (commu_num)
+        REFERENCES allchwi.community (commu_num) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+-- member_login Table Create SQL
+CREATE TABLE allchwi.online_check
+(
+    `check_num`     INT(11)      NOT NULL    AUTO_INCREMENT, 
+    `ml_num`        INT(11)      NOT NULL, 
+    `online_num`    INT(11)      NOT NULL, 
+    `view_point`    INT(11)      NULL        DEFAULT NULL, 
+    `view_regdate`  TIMESTAMP    NULL        DEFAULT NULL, 
+    PRIMARY KEY (check_num, ml_num, online_num)
+);
+
+CREATE INDEX fk_online_check_member_login_idx ON allchwi.online_check
+(
+    ml_num
+);
+
+CREATE INDEX fk_online_check_online_class_idx ON allchwi.online_check
+(
+    online_num
+);
+
+ALTER TABLE allchwi.online_check
+    ADD CONSTRAINT fk_online_check_online_class FOREIGN KEY (online_num)
+        REFERENCES allchwi.online_class (online_num) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE allchwi.online_check
+    ADD CONSTRAINT fk_online_check_member_login FOREIGN KEY (ml_num)
+        REFERENCES allchwi.member_login (ml_num) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+-- member_login Table Create SQL
+CREATE TABLE allchwi.point
+(
+    `point_num`      INT(11)        NOT NULL    AUTO_INCREMENT, 
+    `ml_num`         INT(11)        NOT NULL, 
+    `point`          INT(11)        NULL        DEFAULT NULL, 
+    `point_name`     VARCHAR(50)    NULL        DEFAULT NULL, 
+    `point_regdate`  TIMESTAMP      NULL        DEFAULT NULL, 
+    `point_type`     CHAR(1)        NULL        DEFAULT NULL COMMENT 'u -> use - 사용 s -> save - 적립', 
+    PRIMARY KEY (point_num, ml_num)
+);
+
+CREATE INDEX fk_point_member_login_idx ON allchwi.point
+(
+    ml_num
+);
+
+ALTER TABLE allchwi.point
+    ADD CONSTRAINT fk_point_member_login FOREIGN KEY (ml_num)
+        REFERENCES allchwi.member_login (ml_num) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+-- member_login Table Create SQL
+CREATE TABLE allchwi.ref_room
+(
+    `room_num`       INT(11)         NOT NULL    AUTO_INCREMENT, 
+    `commu_num`      INT(11)         NOT NULL, 
+    `room_title`     VARCHAR(45)     NOT NULL, 
+    `room_content`   VARCHAR(45)     NOT NULL, 
+    `room_regdate`   TIMESTAMP       NOT NULL    DEFAULT CURRENT_TIMESTAMP(), 
+    `room_view`      INT(45)         NOT NULL, 
+    `horsehead`      VARCHAR(45)     NOT NULL, 
+    `org_filename`   VARCHAR(150)    NOT NULL, 
+    `save_filename`  VARCHAR(150)    NOT NULL, 
+    `filesize`       BIGINT(20)      NOT NULL, 
+    PRIMARY KEY (room_num, commu_num)
+);
+
+CREATE INDEX fk_ref_room_community1_idx ON allchwi.ref_room
+(
+    commu_num
+);
+
+ALTER TABLE allchwi.ref_room
+    ADD CONSTRAINT fk_ref_room_community FOREIGN KEY (commu_num)
+        REFERENCES allchwi.community (commu_num) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+-- member_login Table Create SQL
+CREATE TABLE allchwi.remit
+(
+    `rem_num`      INT(11)         NOT NULL    AUTO_INCREMENT, 
+    `pay_num`      INT(11)         NOT NULL, 
+    `rem_pay`      INT(8)          NOT NULL, 
+    `rem_bank`     VARCHAR(45)     NOT NULL, 
+    `rem_account`  VARCHAR(100)    NOT NULL, 
+    `rem_regdate`  TIMESTAMP       NOT NULL    DEFAULT CURRENT_TIMESTAMP(), 
+    `rem_status`   INT(4)          NOT NULL, 
+    `rem_revenue`  INT(11)         NOT NULL, 
+    PRIMARY KEY (rem_num, pay_num)
+);
+
+CREATE INDEX fk_remit_payment_idx ON allchwi.remit
+(
+    pay_num
+);
+
+ALTER TABLE allchwi.remit
+    ADD CONSTRAINT fk_remit_payment FOREIGN KEY (pay_num)
+        REFERENCES allchwi.payment (pay_num) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+-- member_login Table Create SQL
+CREATE TABLE allchwi.sales
+(
+    `sales_num`  INT(11)        NOT NULL    AUTO_INCREMENT, 
+    `pay_num`    INT(11)        NOT NULL, 
+    `className`  VARCHAR(45)    NOT NULL, 
+    `tutorName`  VARCHAR(45)    NOT NULL, 
+    `pay`        INT(11)        NOT NULL, 
+    `regdate`    TIMESTAMP      NOT NULL    DEFAULT CURRENT_TIMESTAMP(), 
+    `revenue`    INT(11)        NOT NULL, 
+    PRIMARY KEY (sales_num, pay_num)
+);
+
+CREATE INDEX fk_sales_payment_idx ON allchwi.sales
+(
+    pay_num
+);
+
+ALTER TABLE allchwi.sales
+    ADD CONSTRAINT fk_sales_payment FOREIGN KEY (pay_num)
+        REFERENCES allchwi.payment (pay_num) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+
+-- member_login Table Create SQL
+CREATE TABLE allchwi.wishlist
+(
+    `wish_num`      INT(11)      NOT NULL    AUTO_INCREMENT, 
+    `class_num`     INT(11)      NOT NULL, 
+    `ml_num`        INT(11)      NOT NULL, 
+    `wish_regdate`  TIMESTAMP    NOT NULL    DEFAULT CURRENT_TIMESTAMP(), 
+    PRIMARY KEY (wish_num, class_num, ml_num)
+);
+
+CREATE INDEX fk_wishlist_class_info_idx ON allchwi.wishlist
+(
+    class_num
+);
+
+CREATE INDEX fk_wishlist_member_login_idx ON allchwi.wishlist
+(
+    ml_num
+);
+
+ALTER TABLE allchwi.wishlist
+    ADD CONSTRAINT fk_wishlist_class_info FOREIGN KEY (class_num)
+        REFERENCES allchwi.class_info (class_num) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+ALTER TABLE allchwi.wishlist
+    ADD CONSTRAINT fk_wishlist_member_login FOREIGN KEY (ml_num)
+        REFERENCES allchwi.member_login (ml_num) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+

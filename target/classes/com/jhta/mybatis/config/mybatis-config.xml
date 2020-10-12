@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias type="com.jhta.allchwi.vo.admin.BigCategoryVO" alias="big_category"/>
+		<typeAlias type="com.jhta.allchwi.vo.admin.SmallCategoryVO" alias="small_category"/>
+		<!-- AdminClassDetail -->
+		<typeAlias type="com.jhta.allchwi.vo.admin.ClassDetailVO" alias="adminClassDetail"/>
+		<!-- AdminCerti -->
+		<typeAlias type="com.jhta.allchwi.vo.admin.CertiVO" alias="adminCerti"/>
+		
+		
+		<!-- Login 관련 Mapper vo alias -->
+		<typeAlias type="com.jhta.allchwi.vo.login.MemberLoginVO" alias="mlv"/>		
+		<typeAlias type="com.jhta.allchwi.vo.login.MemberInfoVO" alias="miv"/>
+		<!-- point 관련 Mapper vo alias -->	
+		<typeAlias type="com.jhta.allchwi.vo.point.PointVO" alias="pv"/>		
+		<!-- pointList 관련 Mapper vo alias -->	
+		<typeAlias type="com.jhta.allchwi.vo.point.PointListVO" alias="plv"/>		
+		<!-- 이미지 파일 관련 Mapper vo alias -->
+		<typeAlias type="com.jhta.allchwi.vo.profileImg.ProfileImgVO" alias="piv"/>
+		<!-- profile 관련 Mapper vo alias -->
+		<typeAlias type="com.jhta.allchwi.vo.login.ProfileVO" alias="pfv"/>
+		<!-- 자격증테이블 alias -->
+		<typeAlias type="com.jhta.allchwi.vo.classopen.CertificateVO" alias="cert"/>		
+		<!-- classApply : 수업신청서 테이블 alias -->		
+		<typeAlias type="com.jhta.allchwi.vo.classapply.ClassApplyVO" alias="classApply"/>
+		<!-- payment 테이블 alias -->
+		<typeAlias type="com.jhta.allchwi.vo.classapply.PaymentVO" alias="pay"/>
+		<typeAlias type="com.jhta.allchwi.vo.classapply.ClassApplyDateInfoVO" alias="adi"/>
+		<!-- ClassInfo 테이블 alias -->		
+		<typeAlias type="com.jhta.allchwi.vo.classopen.ClassInfoVO" alias="classInfo"/>	
+		<!-- 커버이미지 테이블 alias -->	
+		<typeAlias type="com.jhta.allchwi.vo.classopen.ClassImgVO" alias="classImg"/>
+		<!-- 수업 Curriculum 테이블 alias -->	
+		<typeAlias type="com.jhta.allchwi.vo.classopen.CurriculumVO" alias="classCurri"/>		
+		<!-- 수업 ClassDate 테이블 alias -->	
+		<typeAlias type="com.jhta.allchwi.vo.classopen.ClassDateVO" alias="classDate"/>		
+		<!-- big_location 테이블 alias -->	
+		<typeAlias type="com.jhta.allchwi.vo.location.BigLocationVO" alias="bloc"/>	
+		<!-- small_location 테이블 alias -->	
+		<typeAlias type="com.jhta.allchwi.vo.location.SmallLocationVO" alias="sloc"/>
+		<!-- class detail alias -->	
+		<typeAlias type="com.jhta.allchwi.vo.classdetail.ClassQnaVO" alias="classQna"/>	
+		<typeAlias type="com.jhta.allchwi.vo.classdetail.ClassReviewVO" alias="classReview"/>	
+		<typeAlias type="com.jhta.allchwi.vo.wishlist.WishListVO" alias="wish"/>
+		<typeAlias type="com.jhta.allchwi.vo.classdetail.ClassDetailVO" alias="classDetail"/>
+		<!-- myClassList alias -->
+		<typeAlias type="com.jhta.allchwi.vo.myclasslist.MyClassListVO" alias="myclassList"/>
+		<!-- myClassManage alias -->
+		<typeAlias type="com.jhta.allchwi.vo.myclassmanage.MyClassManageVO" alias="mcm"/>
+		<!-- wishList alias -->
+		<typeAlias type="com.jhta.allchwi.vo.wishlist.WishListJoinVO" alias="wishList"/>
+		<!-- Community alias -->
+		<typeAlias type="com.jhta.allchwi.vo.community.CommunityVO" alias="commuInfo"/>
+		<!-- Commu-Assignment alias -->
+		<typeAlias type="com.jhta.allchwi.vo.community.AssignmentVO" alias="assignment"/>
+		<!-- Commu-AssignSubmit alias -->
+		<typeAlias type="com.jhta.allchwi.vo.community.AssignSubmitVO" alias="assignsubmit"/>
+		<!-- Commu-AssignData alias -->
+		<typeAlias type="com.jhta.allchwi.vo.community.AssignDataVO" alias="assigndata"/>
+		<!-- Commu-Notice alias -->
+		<typeAlias type="com.jhta.allchwi.vo.community.NoticeVO" alias="notice"/>
+		<!-- onlineclassVo alias -->
+		<typeAlias type="com.jhta.allchwi.vo.onlineclass.OnlineClassVO" alias="onlineClass"/>
+		<!-- Commu qna -->
+		<typeAlias type="com.jhta.allchwi.vo.community.CommuQnaVO" alias="commuQna"/>
+		<!-- OnlineCheck -->
+		<typeAlias type="com.jhta.allchwi.vo.onlineclass.OnlineCheckVO" alias="onlineCheck"/>
+		
+		
+	</typeAliases>
+
+	<mappers>
+		<!-- admin관련 Mapper -->
+		<mapper resource="com/jhta/mybatis/mapper/CategoryMapper.xml"/>
+		<mapper resource="com/jhta/mybatis/mapper/AdminManageClassMapper.xml"/>
+		<mapper resource="com/jhta/mybatis/mapper/AdminMemberListMapper.xml"/>
+		<mapper resource="com/jhta/mybatis/mapper/AdminConfirmClassMapper.xml"/>
+		<mapper resource="com/jhta/mybatis/mapper/AdminPaymentMapper.xml"/>
+		<mapper resource="com/jhta/mybatis/mapper/AdminRemitMapper.xml"/>
+		<mapper resource="com/jhta/mybatis/mapper/AdminStatisticMapper.xml"/>
+		<mapper resource="com/jhta/mybatis/mapper/AdminPicsChangeMapper.xml"/>
+		
+		
+		<!-- Login관련 Mapper 경로 -->
+		<mapper resource="com/jhta/mybatis/mapper/MemberLoginMapper.xml"/>
+		<mapper resource="com/jhta/mybatis/mapper/MemberInfoMapper.xml"/>
+		<!-- Point관련 Mapper 경로 -->
+		<mapper resource="com/jhta/mybatis/mapper/PointMapper.xml"/>			
+		<!-- ProfileImg관련 Mapper 경로 -->
+		<mapper resource="com/jhta/mybatis/mapper/ProfileImgMapper.xml"/>
+		
+		<!-- Class등록 Mapper -->
+		<mapper resource="com/jhta/mybatis/mapper/CertificateMapper.xml"/>
+		<mapper resource="com/jhta/mybatis/mapper/ClassInfoMapper.xml"/>
+		<mapper resource="com/jhta/mybatis/mapper/ClassImgMapper.xml"/>
+		<mapper resource="com/jhta/mybatis/mapper/ClassDateMapper.xml"/>
+		
+		<!-- Class Apply Mapper -->
+		<mapper resource="com/jhta/mybatis/mapper/ClassApplyMapper.xml"/>
+		<mapper resource="com/jhta/mybatis/mapper/PaymentMapper.xml"/>
+		
+		<!-- Class detail 관련 Mapper -->
+		<mapper resource="com/jhta/mybatis/mapper/ClassQnaMapper.xml"/>
+		<mapper resource="com/jhta/mybatis/mapper/ClassReviewMapper.xml"/>
+		<mapper resource="com/jhta/mybatis/mapper/WishListMapper.xml"/>
+		<mapper resource="com/jhta/mybatis/mapper/ClassDetailMapper.xml"/>
+		
+		<!-- Location 등록 -->
+		<mapper resource="com/jhta/mybatis/mapper/BigLocationMapper.xml"/>
+		<mapper resource="com/jhta/mybatis/mapper/SmallLocationMapper.xml"/>
+		
+		<!-- Curriculum mapper -->
+		<mapper resource="com/jhta/mybatis/mapper/CuriiculumMapper.xml"/>
+		
+		<!-- MyClassManage mapper -->
+		<mapper resource="com/jhta/mybatis/mapper/MyClassManageMapper.xml"/>
+		
+		<!-- 튜터 수업료 받기 -->
+		<mapper resource="com/jhta/mybatis/mapper/ReceiptMapper.xml"/>
+		
+		<!-- 커뮤니티 mapper -->
+		<mapper resource="com/jhta/mybatis/mapper/CommunityArchiveMapper.xml"/>	
+		
+		<!-- 커뮤니티 mapper -->
+		<mapper resource="com/jhta/mybatis/mapper/CommunityMapper.xml"/>	
+		
+		<!-- 커뮤니티 과제 mapper -->
+		<mapper resource="com/jhta/mybatis/mapper/AssignmentMapper.xml"/>	
+		<mapper resource="com/jhta/mybatis/mapper/AssignSubmitMapper.xml"/>	
+		<mapper resource="com/jhta/mybatis/mapper/AssignDataMapper.xml"/>	
+		
+		<!--a 커뮤니티 공지mapper -->
+		<mapper resource="com/jhta/mybatis/mapper/CommunityNoticeMapper.xml"/>
+			
+		<!-- 온라인 강의 -->
+		<mapper resource="com/jhta/mybatis/mapper/OnlineClassMapper.xml"/>
+		<!-- 온라인수강범위 qna  -->
+		<mapper resource="com/jhta/mybatis/mapper/OnlineCheckMapper.xml"/>
+					
+		<!-- 커뮤니티 qna  -->
+		<mapper resource="com/jhta/mybatis/mapper/CommunityQnaMapper.xml"/>
+			
+	</mappers>
+</configuration>
+
+
+
+
+
+
+
+
+
+
