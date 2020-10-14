@@ -23,5 +23,4 @@ public class ClassDetailDAO {
 	public List<ClassDetailVO> topFive() {
 		return session.selectList(NAMESPACE+".topFive");
 	}
-	
 }
