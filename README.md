@@ -14,7 +14,7 @@ www.allchwi.com
 # 개발환경
 | 운영체제 	| DB 	| 사용언어 	| 라이브러리/프레임워크	| 개발도구	| Web Server  	|  
 |-	|-	|-	|-	|-	|-	|
-| Window7 	| MySQL 	| Java, Javascript, CSS 	| jQuery, Mybatis 	|  Spring Tool Suite 3	|  Tomcat 8.5.15	| 
+| Window7 	| MariaDB 	| Java, Javascript, CSS 	| jQuery, Mybatis 	|  Spring Tool Suite 3	|  Tomcat 8.5.15	| 
 
 # 기능설명
 
